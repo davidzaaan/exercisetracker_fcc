@@ -10,11 +10,8 @@ const bodyParser = require("body-parser")
 const port = process.env.PORT || 3000;
 
 
-// mongoose.connect(process.env.MONGO_URI, {
-//     useUnifiedTopology: true,
-//     useNewUrlParser: true,
-// });
-mongoose.connect('mongodb://localhost/21017')
+mongoose.connect(process.env.MONGO_URI);
+// mongoose.connect('mongodb://localhost/21017')
 const { Schema } = mongoose;
 
 const ExerciseSchema = new Schema({
@@ -44,13 +41,8 @@ app.post("/api/users", (req, res) => {
     const newUser = new User({
         username: req.body.username
     })
-    newUser.save((err, data) => {
-        if (err || !data) {
-            res.send("There was an error saving the user")
-        } else {
-            res.json(data)
-        }
-    })
+    newUser.save()
+    res.json(user)
 })
 
 app.post("/api/users/:id/exercises", (req, res) => {
