@@ -181,7 +181,12 @@ app.get('/api/users/:id/logs', async (req, res) => {
     }
 
     // if no query string parameters passed, send the user object
-    res.send(user)
+    res.json({
+      _id: user._id,
+      username: user.username,
+      count: user.count,
+      log: user.log
+    })
 
   } catch (err) {
     res.json({
