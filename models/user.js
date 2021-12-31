@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const uri = process.env.MONGODB_URI; // this will access to the database on Mongo Atlas
-mongoose.connect(uri)
-// mongoose.connect('mongodb://localhost/21017')
+// const uri = process.env.MONGODB_URI; // this will access to the database on Mongo Atlas
+// mongoose.connect(uri)
+mongoose.connect('mongodb://localhost/21017')
 
 const Schema = new mongoose.Schema({
     username: {

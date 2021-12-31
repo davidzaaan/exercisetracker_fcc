@@ -76,15 +76,8 @@ app.post('/api/users/:id/exercises', async (req, res) => {
     // Inserting data to user...
     if (exercises(id, description, duration, date)) {
 
-      const user = await User.findById(id);
-
-      return res.json({
-        _id: user._id,
-        username: user.username,
-        date,
-        duration,
-        description
-      })
+      const user = await User.findById(id).select('-count')
+      return res.send(user.log[-1]);
 
     } else {
 
