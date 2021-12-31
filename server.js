@@ -63,7 +63,7 @@ app.post('/api/users/:id/exercises', async (req, res) => {
     let id = req.body.id;
     let description = req.body.description;
     let duration = parseInt(req.body.duration);
-    let date = new Date(req.body.date);
+    let date = new Date(req.body.date).toDateString();
 
     if (date == 'Invalid Date') {
       date = new Date().toDateString();
