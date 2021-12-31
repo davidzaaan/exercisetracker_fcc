@@ -60,9 +60,9 @@ app.route('/api/users')
 app.post('/api/users/:id/exercises', async (req, res) => {
   try {
     // Getting data from the form
-    let id = req.body.id;
-    let description = req.body.description;
-    let duration = parseInt(req.body.duration);
+    const id = req.body.id;
+    const description = req.body.description;
+    const duration = parseInt(req.body.duration);
     let date = new Date(req.body.date).toDateString();
 
     if (date == 'Invalid Date') {
@@ -109,7 +109,8 @@ app.get('/api/users/:id/logs', async (req, res) => {
     const user = await User.findById(req.params.id);
 
     // if the query string object is not empty
-    if (req.query.length !== 0) {
+    if (Object.keys(req.query).length !== 0) {
+      console.log(req.query)
 
       let limit = Number(req.query.limit)
 
@@ -178,15 +179,17 @@ app.get('/api/users/:id/logs', async (req, res) => {
         log: user.log.slice(0, limit)
       })
 
+    } else {
+      // if no query string parameters passed, send the user object
+      res.json({
+        _id: user._id,
+        username: user.username,
+        count: user.count,
+        log: user.log
+      })
     }
 
-    // if no query string parameters passed, send the user object
-    res.json({
-      _id: user._id,
-      username: user.username,
-      count: user.count,
-      log: user.log
-    })
+
 
   } catch (err) {
     res.json({
