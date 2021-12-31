@@ -41,8 +41,12 @@ app.post("/api/users", (req, res) => {
     const newUser = new User({
         username: req.body.username
     })
-    newUser.save()
-    res.json(user)
+    newUser.save().then((user) => {
+        res.json(user)
+    }).catch((e) => {
+        return res.send('Could not find user')
+    })
+
 })
 
 app.post("/api/users/:id/exercises", (req, res) => {
@@ -50,7 +54,7 @@ app.post("/api/users/:id/exercises", (req, res) => {
     const { description, duration, date } = req.body
     User.findById(id, (err, userData) => {
         if (err || !userData) {
-            res.send("Could not find user");
+            return res.send("Could not find user");
         } else {
             const newExercise = new Exercise({
                 userId: id,
@@ -58,19 +62,17 @@ app.post("/api/users/:id/exercises", (req, res) => {
                 duration,
                 date: new Date(date),
             })
-            newExercise.save((err, data) => {
-                if (err || !data) {
-                    res.send("There was an error saving this exercise")
-                } else {
-                    const { description, duration, date, _id } = data;
-                    res.json({
-                        username: userData.username,
-                        description,
-                        duration,
-                        date: date.toDateString(),
-                        _id: userData.id
-                    })
-                }
+            newExercise.save().then((data) => {
+                const { description, duration, date, _id } = data;
+                res.json({
+                    username: userData.username,
+                    description,
+                    duration,
+                    date: date.toDateString(),
+                    _id: userData.id
+                })
+            }).catch((e) => {
+                return res.send("There was an error saving this exercise")
             })
         }
     })
@@ -81,7 +83,7 @@ app.get("/api/users/:id/logs", (req, res) => {
     const { id } = req.params;
     User.findById(id, (err, userData) => {
         if (err || !userData) {
-            res.send("Could not find user");
+            return res.send("Could not find user");
         } else {
             let dateObj = {}
             if (from) {
@@ -99,7 +101,7 @@ app.get("/api/users/:id/logs", (req, res) => {
             let nonNullLimit = limit ?? 500
             Exercise.find(filter).limit(+nonNullLimit).exec((err, data) => {
                 if (err || !data) {
-                    res.json([])
+                    res.json({})
                 } else {
                     const count = data.length
                     const rawLog = data
@@ -119,7 +121,7 @@ app.get("/api/users/:id/logs", (req, res) => {
 app.get("/api/users", (req, res) => {
     User.find({}, (err, data) => {
         if (!data) {
-            res.send("No users")
+            return res.send("No users")
         } else {
             res.json(data)
         }
