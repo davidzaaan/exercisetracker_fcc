@@ -10,8 +10,8 @@ const bodyParser = require("body-parser")
 const port = process.env.PORT || 3000;
 
 
-mongoose.connect(process.env.MONGO_URI);
-// mongoose.connect('mongodb://localhost/21017')
+// mongoose.connect(process.env.MONGO_URI);
+mongoose.connect('mongodb://localhost/21017')
 const { Schema } = mongoose;
 
 const ExerciseSchema = new Schema({
