@@ -78,10 +78,10 @@ app.post("/api/users/:id/exercises", (req, res) => {
     })
 })
 
-app.get("/api/users/:id/logs", (req, res) => {
+app.get("/api/users/:_id/logs", async (req, res) => {
     const { from, to, limit } = req.query;
-    const { id } = req.params;
-    User.findById(id, (err, userData) => {
+    const { _id } = req.params;
+    User.findById(_id, async (err, userData) => {
         if (err || !userData) {
             return res.send("Could not find user");
         } else {
@@ -93,29 +93,33 @@ app.get("/api/users/:id/logs", (req, res) => {
                 dateObj["$lte"] = new Date(to)
             }
             let filter = {
-                userId: id
+                userId: _id,
             }
             if (from || to) {
                 filter.date = dateObj
             }
-            let nonNullLimit = limit ?? 500
-            Exercise.find(filter).limit(+nonNullLimit).exec((err, data) => {
+            let nonNullLimit = limit || 500
+            const exercises = await Exercise.find(filter).limit(+nonNullLimit).exec((err, data) => {
                 if (err || !data) {
                     res.json({})
                 } else {
                     const count = data.length
+                    console.log(count)
                     const rawLog = data
+                    console.log(rawLog)
                     const { username, _id } = userData;
-                    const log = rawLog.map((l) => ({
+                    const log = rawLog.map((l) => [{
                         description: l.description,
                         duration: l.duration,
                         date: l.date.toDateString()
-                    }))
+                    }])
                     res.json({ username, count, _id, log })
                 }
             })
         }
+        // res.json(userData)
     })
+    // res.json(user)
 })
 
 app.get("/api/users", (req, res) => {

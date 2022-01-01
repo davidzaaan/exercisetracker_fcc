@@ -4,9 +4,9 @@
 	"description": "A REST API project, part of Free Code Camp's curriculum",
 	"main": "server.js",
 	"scripts": {
-		"start": "node test.js",
+		"start": "node app.js",
 		"dev": "nodemon server.js",
-		"sapo": "nodemon test.js"
+		"sapo": "nodemon app.js"
 	},
 	"engines": {
 		"node": "16.4.2"
