@@ -165,46 +165,6 @@ app.get('/api/users/:_id/logs', async (req, res) => {
         Log.count = userLogs.slice(0, limit).length;
         Log.log = userLogs.slice(0, limit);
         res.send(Log);
-        // if (req.query.from) {
-        //     try {
-        //         const from = new Date(req.query.from);
-
-        //         if (from == 'Invalid Date') throw new Error('invalid date format');
-        //         const exercisesFrom = Log.log.filter((exercise) => {
-        //             let date = new Date(exercise.date).getTime();
-        //             if (date >= from.getTime()) {
-        //                 return true;
-        //             }
-        //         })
-
-        //         Log.from = from.toDateString()
-        //         Log.log = exercisesFrom;
-
-        //         res.send(Log)
-        //     } catch (err) {
-        //         return res.json({ error: err.message })
-        //     }
-        // }
-
-        // if (req.query.to) {
-        //     try {
-        //         const to = new Date(req.query.to);
-
-        //         if (from == 'Invalid Date') throw new Error('invalid date format');
-        //         const exercisesTo = Log.log.filter((exercise) => {
-        //             let date = new Date(exercise.date).getTime();
-        //             if (date <= from.getTime()) {
-        //                 return true;
-        //             }
-        //         })
-
-        //         Log.log = exercisesFrom;
-
-
-        //     } catch (err) {
-        //         return res.json({ error: err.message })
-        //     }
-        // }
 
 
     } else {
